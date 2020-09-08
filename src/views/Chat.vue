@@ -2,19 +2,26 @@
   <div class="container">
     <div class="content">
       <div class="left-panel">
-        <div class="title">
-          <input type="text" />
+        <div id="setting-bar">
+          <a-avatar style="color: #f56a00; backgroundColor: #fde3cf">
+            U
+          </a-avatar>
         </div>
-        <div class="list-panel">
-          <div class="user-item">User1</div>
-          <div class="user-item">User2</div>
-          <div class="user-item">User3</div>
-          <div class="user-item">User4</div>
-          <div class="user-item">User5</div>
-          <div class="user-item">User4</div>
-          <div class="user-item">User5</div>
-          <div class="user-item">User4</div>
-          <div class="user-item">User5</div>
+        <div id="list-panel">
+          <div class="title">
+            <a-input type="text" placeholder="Search" />
+          </div>
+          <div id="list-view">
+            <a-list :data-source="data">
+              <a-list-item slot="renderItem" slot-scope="item, index">
+                <a-list-item-meta :key="index">
+                  <a slot="title" href="#">{{ item.name }}</a>
+                  <a-avatar slot="avatar" :src="item.icon" />
+                  <span slot="description">Ant Design, a design language for background applications, is refined by Ant UED Team</span>
+                </a-list-item-meta>
+              </a-list-item>
+            </a-list>
+          </div>
         </div>
       </div>
       <div class="right-panel">
@@ -51,6 +58,37 @@
 export default {
   name: "Home",
   components: {},
+  data () {
+    return {
+      data: [
+        {
+          id: "001",
+          icon: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          name: "JAMES001",
+        },
+        {
+          id: "002",
+          icon: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          name: "JAMES002",
+        },
+        {
+          id: "003",
+          icon: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          name: "JAMES003",
+        },
+        {
+          id: "004",
+          icon: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          name: "JAMES004",
+        },
+        {
+          id: "005",
+          icon: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          name: "JAMES005",
+        },
+      ],
+    };
+  }
 };
 </script>
 
@@ -66,37 +104,51 @@ export default {
     min-height: 120px;
     display: flex;
     min-width: 1024px;
-    height: 720px;
+    height: 760px;
     background-color: #f0f2f5;
     .left-panel {
       background-color: #fff;
       height: 100%;
       width: 35%;
       min-width: 120px;
-      .title {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #000;
-        opacity: 0.8;
-        height: 12%;
-        input {
-          width: 70%;
-          height: 40px;
-        }
+      display: flex;
+      #setting-bar {
+        height: 100%;
+        width: 70px;
+        background-color: #1f1f1feb;
+        padding: 20px 0px;
       }
-      .list-panel {
+      #list-panel {
         width: 100%;
-        height: 88%;
-        overflow-x: hidden;
-        overflow-y: auto;
-        .user-item {
-          background-color: #000;
-          color: #fff;
-          height: 80px;
-          line-height: 80px;
-          &:not(:first-child) {
-            margin: 5px 0 0 0;
+        display: flex;
+        flex-wrap: wrap;
+        .title {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: #f5f5f5;
+          height: 58px;
+          width: 100%;
+          padding: 20px 0 10px 0;
+          input {
+            width: 80%;
+            height: 30px;
+          }
+        }
+        #list-view {
+          width: 100%;
+          height: 100%;
+          overflow-x: hidden;
+          overflow-y: auto;
+          position: relative;
+          // .user-item {
+          //   background-color: #f5f5f5;
+          //   color: #fff;
+          //   height: 80px;
+          //   line-height: 80px;
+          // }
+          ul>li {
+            text-align: left;
           }
         }
       }
