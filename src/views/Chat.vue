@@ -11,16 +11,26 @@
           <div class="title">
             <a-input type="text" placeholder="Search" />
           </div>
-          <div id="list-view">
-            <a-list :data-source="data">
-              <a-list-item slot="renderItem" slot-scope="item, index">
-                <a-list-item-meta :key="index">
-                  <a slot="title" href="#">{{ item.name }}</a>
-                  <a-avatar slot="avatar" :src="item.icon" />
-                  <span slot="description">Ant Design, a design language for background applications, is refined by Ant UED Team</span>
-                </a-list-item-meta>
-              </a-list-item>
-            </a-list>
+          <div class="list-view">
+            <ul>
+              <li
+                v-for="(item, index) in data"
+                :key="index"
+                @click="switchChatWindows(item)"
+                class="u-item"
+              >
+                <a-avatar :src="item.icon" class="u-icon"></a-avatar>
+                <div class="u-prof">
+                  <h4>
+                    <span id="u-name">{{ item.name }}</span>
+                  </h4>
+                  <div id="u-desc">
+                    Ant Design, a design language for background applications,
+                    is refined by Ant UED Team
+                  </div>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -58,37 +68,101 @@
 export default {
   name: "Home",
   components: {},
-  data () {
+  data() {
     return {
       data: [
         {
           id: "001",
-          icon: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          icon:
+            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
           name: "JAMES001",
         },
         {
           id: "002",
-          icon: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          icon:
+            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
           name: "JAMES002",
         },
         {
           id: "003",
-          icon: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          icon:
+            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
           name: "JAMES003",
         },
         {
           id: "004",
-          icon: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          icon:
+            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
           name: "JAMES004",
         },
         {
           id: "005",
-          icon: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          icon:
+            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          name: "JAMES005",
+        },
+        {
+          id: "003",
+          icon:
+            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          name: "JAMES003",
+        },
+        {
+          id: "004",
+          icon:
+            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          name: "JAMES004",
+        },
+        {
+          id: "005",
+          icon:
+            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          name: "JAMES005",
+        },
+        {
+          id: "003",
+          icon:
+            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          name: "JAMES003",
+        },
+        {
+          id: "004",
+          icon:
+            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          name: "JAMES004",
+        },
+        {
+          id: "005",
+          icon:
+            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          name: "JAMES005",
+        },
+        {
+          id: "003",
+          icon:
+            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          name: "JAMES003",
+        },
+        {
+          id: "004",
+          icon:
+            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          name: "JAMES004",
+        },
+        {
+          id: "005",
+          icon:
+            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
           name: "JAMES005",
         },
       ],
     };
-  }
+  },
+  methods: {
+    switchChatWindows(targetUser) {
+      console.log(targetUser);
+    },
+  },
 };
 </script>
 
@@ -101,10 +175,10 @@ export default {
   .content {
     border: 1px solid #f0f2f5;
     color: #ffffff;
-    min-height: 120px;
     display: flex;
-    min-width: 1024px;
+    width: 1024px;
     height: 760px;
+    min-height: 120px;
     background-color: #f0f2f5;
     .left-panel {
       background-color: #fff;
@@ -114,12 +188,12 @@ export default {
       display: flex;
       #setting-bar {
         height: 100%;
-        width: 70px;
+        width: 60px;
         background-color: #1f1f1feb;
         padding: 20px 0px;
       }
       #list-panel {
-        width: 100%;
+        width: calc(100% - 60px);
         display: flex;
         flex-wrap: wrap;
         .title {
@@ -135,20 +209,72 @@ export default {
             height: 30px;
           }
         }
-        #list-view {
+        .list-view {
+          display: flex;
           width: 100%;
-          height: 100%;
+          height: calc(100% - 58px);
           overflow-x: hidden;
           overflow-y: auto;
-          position: relative;
-          // .user-item {
-          //   background-color: #f5f5f5;
-          //   color: #fff;
-          //   height: 80px;
-          //   line-height: 80px;
-          // }
-          ul>li {
-            text-align: left;
+          flex-wrap: wrap;
+          background-color: #f5f5f5;
+
+          &::-webkit-scrollbar {
+            width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+            height: 6px;
+          }
+          &::-webkit-scrollbar-thumb {
+            border-radius: 6px;
+            background: rgba(144, 147, 153, 0.5);
+          }
+          &::-webkit-scrollbar-track {
+            border-radius: 5px;
+            background: transparent;
+          }
+
+          ul {
+            margin: 0;
+            padding: 0;
+            li {
+              cursor: pointer;
+              &:hover {
+                background-color: #f1f1f1;
+              }
+            }
+          }
+          .u-item {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #9c9c9c17;
+            padding: 15px 10px;
+            background-color: #f5f5f5;
+
+            .u-icon {
+              font-size: 20px;
+              display: inline-flex;
+            }
+            .u-prof {
+              display: inline-flex;
+              flex-wrap: wrap;
+              margin-left: 10px;
+              h4 {
+                width: 100%;
+                text-align: left;
+              }
+              #u-name {
+                font-size: 14px;
+                color: #000;
+                display: block;
+              }
+              #u-desc {
+                font-size: 12px;
+                color: #9c9c9c;
+                display: block;
+                width: 120px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
+            }
           }
         }
       }
