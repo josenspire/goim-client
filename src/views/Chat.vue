@@ -18,6 +18,7 @@
                 :key="index"
                 @click="switchChatWindows(item)"
                 class="u-item"
+                :class="{ active: isActive(item.id) }"
               >
                 <a-avatar :src="item.icon" class="u-icon"></a-avatar>
                 <div class="u-prof">
@@ -36,10 +37,23 @@
       </div>
       <div class="right-panel">
         <div class="title">
-          <span>James</span>
+          <span>{{ selectedContact.name }}</span>
         </div>
         <div class="view-panel">
-          <div class="msg-item left">
+          <div
+            v-for="(item, index) in targetChatList"
+            :key="index"
+            class="msg-item"
+            :class="isSendMessage(item.messageDirection) ? 'right' : 'left'"
+          >
+            <template v-if="isSendMessage(item.messageDirection)">
+              <span class="msg-content">{{item.content}}</span> <a-avatar style="backgroundColor:#87d068" icon="user" size="48"/>
+            </template>
+            <template v-else>
+              <a-avatar :src="userProfile.icon" /> <span class="msg-content">{{item.content}}</span>
+            </template>
+          </div>
+          <!-- <div class="msg-item left">
             <a-icon type="user" /> <span>How are your ?</span>
           </div>
           <div class="msg-item right">
@@ -47,7 +61,7 @@
           </div>
           <div class="msg-item left">
             <a-icon type="user" /> <span>Fine.</span>
-          </div>
+          </div> -->
         </div>
         <div class="ops-panel">
           <div class="input-panel">
@@ -70,97 +84,150 @@ export default {
   components: {},
   data() {
     return {
-      data: [
-        {
-          id: "001",
-          icon:
-            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          name: "JAMES001",
-        },
-        {
-          id: "002",
-          icon:
-            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          name: "JAMES002",
-        },
-        {
-          id: "003",
-          icon:
-            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          name: "JAMES003",
-        },
-        {
-          id: "004",
-          icon:
-            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          name: "JAMES004",
-        },
-        {
-          id: "005",
-          icon:
-            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          name: "JAMES005",
-        },
-        {
-          id: "003",
-          icon:
-            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          name: "JAMES003",
-        },
-        {
-          id: "004",
-          icon:
-            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          name: "JAMES004",
-        },
-        {
-          id: "005",
-          icon:
-            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          name: "JAMES005",
-        },
-        {
-          id: "003",
-          icon:
-            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          name: "JAMES003",
-        },
-        {
-          id: "004",
-          icon:
-            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          name: "JAMES004",
-        },
-        {
-          id: "005",
-          icon:
-            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          name: "JAMES005",
-        },
-        {
-          id: "003",
-          icon:
-            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          name: "JAMES003",
-        },
-        {
-          id: "004",
-          icon:
-            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          name: "JAMES004",
-        },
-        {
-          id: "005",
-          icon:
-            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          name: "JAMES005",
-        },
-      ],
+      userProfile: {
+        id: "001",
+        name: "JAMES001",
+        icon:
+          "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+      },
+      selectedContact: {},
+      data: [],
+      selectedChat: {
+        "009": [
+          {
+            id: "msg001",
+            type: "SINGLE_CHAT",
+            targetId: "001",
+            senderUserId: "009",
+            content: "How are you?",
+            messageType: "MESSAGE",
+            messageDirection: "2", // 1：发送，2：接收
+            isOfflineMessage: false, // 是否离线消息
+            sentTime: "2020-09-11T09:10:12+08:00",
+            receivedTime: "2020-09-11T09:10:19+08:00",
+            isPersited: true, // 消息是否存在客户端
+            isCounted: false, // 消息是否计数
+          },
+          {
+            id: "msg002",
+            type: "SINGLE_CHAT",
+            targetId: "009",
+            senderUserId: "001",
+            content: "I am fine thank you, and you?",
+            messageType: "MESSAGE",
+            messageDirection: "1", // 1：发送，2：接收
+            isOfflineMessage: false, // 是否离线消息
+            sentTime: "2020-09-11T09:10:30+08:00",
+            receivedTime: "2020-09-11T09:10:34+08:00",
+            isPersited: true, // 消息是否存在客户端
+            isCounted: false, // 消息是否计数
+          },
+          {
+            id: "msg001",
+            type: "SINGLE_CHAT",
+            targetId: "001",
+            senderUserId: "009",
+            content: "Fine...",
+            messageType: "MESSAGE",
+            messageDirection: "2", // 1：发送，2：接收
+            isOfflineMessage: false, // 是否离线消息
+            sentTime: "2020-09-11T09:10:55+08:00",
+            receivedTime: "2020-09-11T09:11:00+08:00",
+            isPersited: true, // 消息是否存在客户端
+            isCounted: false, // 消息是否计数
+          },
+        ],
+        "005": [
+          {
+            id: "msg003",
+            type: "SINGLE_CHAT",
+            targetId: "005",
+            senderUserId: "001",
+            content: "Let's going to the party?",
+            messageType: "MESSAGE",
+            messageDirection: "1", // 1：发送，2：接收
+            isOfflineMessage: false, // 是否离线消息
+            sentTime: "2020-09-10T20:12:12+08:00",
+            receivedTime: "2020-09-10T20:12:15+08:00",
+            isPersited: true, // 消息是否存在客户端
+            isCounted: false, // 消息是否计数
+          },
+          {
+            id: "msg004",
+            type: "SINGLE_CHAT",
+            targetId: "001",
+            senderUserId: "005",
+            content: "That's great, what's time is it?",
+            messageType: "MESSAGE",
+            messageDirection: "2", // 1：发送，2：接收
+            isOfflineMessage: false, // 是否离线消息
+            sentTime: "2020-09-10T20:13:50+08:00",
+            receivedTime: "2020-09-10T20:14:20+08:00",
+            isPersited: true, // 消息是否存在客户端
+            isCounted: false, // 消息是否计数
+          },
+          {
+            id: "msg005",
+            type: "SINGLE_CHAT",
+            targetId: "005",
+            senderUserId: "001",
+            content: "On 21:00, let's going now.",
+            messageType: "MESSAGE",
+            messageDirection: "1", // 1：发送，2：接收
+            isOfflineMessage: false, // 是否离线消息
+            sentTime: "2020-09-10T20:14:12+08:00",
+            receivedTime: "2020-09-10T20:14:15+08:00",
+            isPersited: true, // 消息是否存在客户端
+            isCounted: false, // 消息是否计数
+          },
+          {
+            id: "msg006",
+            type: "SINGLE_CHAT",
+            targetId: "001",
+            senderUserId: "005",
+            content: "OK, see you late.",
+            messageType: "MESSAGE",
+            messageDirection: "2", // 1：发送，2：接收
+            isOfflineMessage: false, // 是否离线消息
+            sentTime: "2020-09-10T20:13:50+08:00",
+            receivedTime: "2020-09-10T20:14:20+08:00",
+            isPersited: true, // 消息是否存在客户端
+            isCounted: false, // 消息是否计数
+          },
+        ],
+      },
     };
   },
+  created() {
+    this.initialUserList();
+  },
+  computed: {
+    targetChatList() {
+      return this.selectedChat[this.selectedContact.id];
+    },
+  },
   methods: {
+    initialUserList() {
+      const results = [];
+      for (let i = 0; i < 20; i++) {
+        results.push({
+          id: "00" + i,
+          icon:
+            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          name: "JAMES00" + i,
+        });
+      }
+      this.data = Object.assign([], results);
+    },
     switchChatWindows(targetUser) {
+      this.selectedContact = Object.assign({}, targetUser);
       console.log(targetUser);
+    },
+    isActive(targetUserId) {
+      return targetUserId === this.selectedContact.id;
+    },
+    isSendMessage (direction) {
+      return direction == "1";
     },
   },
 };
@@ -236,11 +303,15 @@ export default {
             padding: 0;
             li {
               cursor: pointer;
-              &:hover {
+              &:not(.active):hover {
                 background-color: #f1f1f1;
               }
             }
+            .active {
+              background-color: #d9d9d9;
+            }
           }
+
           .u-item {
             display: flex;
             align-items: center;
@@ -311,13 +382,13 @@ export default {
           align-items: center;
           width: 100%;
           height: 40px;
-          i {
-            border: 1px solid #9c9c9c;
-            padding: 5px;
-            font-size: 24px;
-            color: #000;
-          }
-          span {
+          // img {
+          //   border: 1px solid #9c9c9c;
+          //   padding: 5px;
+          //   font-size: 24px;
+          //   color: #000;
+          // }
+          .msg-content {
             display: flex;
             align-items: center;
             height: 100%;
@@ -330,13 +401,13 @@ export default {
         }
         .left {
           justify-content: flex-start;
-          span {
+          .msg-content {
             margin-left: 10px;
           }
         }
         .right {
           justify-content: flex-end;
-          span {
+          .msg-content {
             margin-right: 10px;
           }
         }
