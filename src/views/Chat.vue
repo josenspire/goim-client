@@ -65,10 +65,10 @@
         </div>
         <div class="ops-panel">
           <div class="input-panel">
-            <a-textarea placeholder="Basic usage" :rows="1" />
+            <a-textarea placeholder="Basic usage" :rows="1" v-model="currentInput"/>
           </div>
           <div class="footer">
-            <a-button type="primary">Send</a-button>
+            <a-button type="primary" @click="handleSendMessage()">Send</a-button>
           </div>
         </div>
       </div>
@@ -78,6 +78,7 @@
 
 <script>
 // @ is an alias to /src
+// import _ from 'lodash';
 
 export default {
   name: "Home",
@@ -123,7 +124,7 @@ export default {
             isCounted: false, // 消息是否计数
           },
           {
-            id: "msg001",
+            id: "msg003",
             type: "SINGLE_CHAT",
             targetId: "001",
             senderUserId: "009",
@@ -139,7 +140,7 @@ export default {
         ],
         "005": [
           {
-            id: "msg003",
+            id: "msg011",
             type: "SINGLE_CHAT",
             targetId: "005",
             senderUserId: "001",
@@ -153,7 +154,7 @@ export default {
             isCounted: false, // 消息是否计数
           },
           {
-            id: "msg004",
+            id: "msg012",
             type: "SINGLE_CHAT",
             targetId: "001",
             senderUserId: "005",
@@ -167,7 +168,7 @@ export default {
             isCounted: false, // 消息是否计数
           },
           {
-            id: "msg005",
+            id: "msg013",
             type: "SINGLE_CHAT",
             targetId: "005",
             senderUserId: "001",
@@ -181,7 +182,7 @@ export default {
             isCounted: false, // 消息是否计数
           },
           {
-            id: "msg006",
+            id: "msg015",
             type: "SINGLE_CHAT",
             targetId: "001",
             senderUserId: "005",
@@ -196,15 +197,26 @@ export default {
           },
         ],
       },
+      selectedChatInputBox: {
+        "002": "Test Result",
+        "009": "Let do it!"
+      },
+      currentInput: ""
     };
   },
   created() {
     this.initialUserList();
   },
   computed: {
-    targetChatList() {
-      return this.selectedChat[this.selectedContact.id];
+    targetContactId () {
+      return this.selectedContact.id;
     },
+    targetChatList() {
+      return this.selectedChat[this.selectedContact.id] || [];
+    },
+    targetChatInputContent() {
+      return this.selectedChatInputBox[this.selectedContact.id] || "";
+    }
   },
   methods: {
     initialUserList() {
@@ -229,6 +241,22 @@ export default {
     isSendMessage (direction) {
       return direction == "1";
     },
+    handleSendMessage () {
+      this.selectedChat[this.selectedContact.id].push({
+        id: `msg00${this.targetChatList.length + 1}`,
+        type: "SINGLE_CHAT",
+        targetId: this.targetContactId,
+        senderUserId: this.userProfile.id,
+        content: this.currentInput,
+        messageType: "MESSAGE", // TODO
+        messageDirection: "1", // 1：发送，2：接收
+        isOfflineMessage: false, // 是否离线消息
+        sentTime: new Date(),
+        receivedTime: new Date(),
+        isPersited: true, // 消息是否存在客户端
+        isCounted: false, // 消息是否计数
+      });
+    }
   },
 };
 </script>
@@ -237,6 +265,7 @@ export default {
 .container {
   width: 100%;
   height: 100%;
+  min-width: 1024px;
   display: flex;
   justify-content: center;
   .content {
@@ -279,6 +308,7 @@ export default {
         .list-view {
           display: flex;
           width: 100%;
+          min-width: 260px;
           height: calc(100% - 58px);
           overflow-x: hidden;
           overflow-y: auto;

@@ -10,6 +10,8 @@ Vue.use(Antd)
 
 Vue.config.productionTip = false
 
+import '@/assets/style/cs-ant-style.scss'
+
 new Vue({
   router,
   store,
